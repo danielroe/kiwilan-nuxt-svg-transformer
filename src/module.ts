@@ -1,3 +1,4 @@
+import { relative, resolve } from 'node:path'
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { addComponent, addTemplate, createResolver, defineNuxtModule, extendViteConfig } from '@nuxt/kit'
 import { name, version } from '../package.json'
@@ -160,6 +161,7 @@ export default defineNuxtModule<ModuleOptions>({
     utils.ignoreFiles()
 
     nuxt.hook('builder:watch', async (event, path) => {
+      path = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, path))
       if (path.startsWith(`${opts.assetsDir}/svg`))
         await Icons.make(opts)
     })
